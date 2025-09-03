@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFrameworks>net9.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>ba96f329-4e89-41d3-8c40-afd4fee6b374</UserSecretsId>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Nerdolando.Bff.AspNetCore\Nerdolando.Bff.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\TokenStorageLibs\Nerdolando.Bff.Storage.Sqlite\Nerdolando.Bff.Storage.Sqlite.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,59 @@
+﻿@page "/"
+@using Nerdolando.Bff.Components.Abstractions
+@inject ILogOutRequest LogOutRequest
+
+<PageTitle>Home</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <h3>Hello @context.User.Identity!.Name</h3>
+        <p>Welcome to the Blazor WebAssembly application.</p>
+
+        @if(IsLoading)
+        {
+            <p>Loading...</p>
+        }
+        else
+        {
+            <button class="btn btn-primary" @onclick=@GetWeatherClickHandler>Pobierz pogodę</button>
+        }
+
+        @if(!string.IsNullOrEmpty(WeatherData))
+        {
+            <p>Weather data loaded!</p>
+            @WeatherData
+        }
+
+        <p>
+            <button @onclick=LogoutClickHandler class="btn btn-danger">Log out</button>
+        </p>
+    </Authorized>
+    <NotAuthorized>
+        <h3>Hello, guest!</h3>
+        <p>Please log in to access more features.</p>
+
+        <a href="authentication/login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject]
+    public IHttpClientFactory HttpClientFactory { get; set; } = null!;
+
+    private bool IsLoading { get; set; }
+    private string WeatherData { get; set; } = string.Empty;
+
+    private async Task GetWeatherClickHandler(MouseEventArgs args)
+    {
+        IsLoading = true;
+        StateHasChanged();
+        var httpClient = HttpClientFactory.CreateClient("BffApi");
+        WeatherData = await httpClient.GetStringAsync("/api/WeatherForecast");
+        IsLoading = false;
+    }
+
+    private async Task LogoutClickHandler(MouseEventArgs args)
+    {
+        await LogOutRequest.LogoutAsync("/");
+    }
+}

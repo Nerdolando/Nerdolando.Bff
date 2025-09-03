@@ -1,0 +1,12 @@
+﻿@page "/signed-in"
+@using Nerdolando.Bff.Components.Abstractions
+@inject IAuthenticationStateRefresher AuthenticationStateRefresher
+@inject NavigationManager NavMan
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthenticationStateRefresher.RefreshAsync();
+        NavMan.NavigateTo("/");
+    }
+}

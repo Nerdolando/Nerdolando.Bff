@@ -1,0 +1,27 @@
+﻿@using Microsoft.Extensions.Options
+@using Nerdolando.Bff.Components.Models
+@inject NavigationManager NavigationManager
+@inject IOptionsMonitor<ClientBffOptions> OptionsMonitor
+
+@code {
+    [Parameter]
+    public string? ReturnUrl { get; set; }
+    [Parameter]
+    public string? FrontAlias { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(string.IsNullOrEmpty(ReturnUrl))
+            ReturnUrl = "/";
+
+        var options = OptionsMonitor.CurrentValue;
+        var frontAlias = FrontAlias ?? options.FrontAlias;
+
+        var uriBuilder = new UriBuilder(options.BffBaseAddress);
+        uriBuilder.Path = "/auth" + options.BffLoginPath;
+        uriBuilder.Query = $"front={frontAlias}&returnUrl={ReturnUrl}";
+        var uri = uriBuilder.Uri;
+
+        NavigationManager.NavigateTo($"{uri}", forceLoad: true);
+    }
+}
