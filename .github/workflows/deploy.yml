@@ -1,15 +1,43 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: Deploy
 
 on:
-  push:
-    branches: [ "master" ]
+  release:
+    types: [created]
 
 jobs:
-  build:
+  generating-version:
+    runs-on: ubuntu-latest
+    outputs:
+      generated-version: ${{ steps.version_step.outputs.version }} 
 
+    steps:
+      - name: Set VERSION variable from tag
+        id: version_step
+        run: echo "version=${GITHUB_REF/refs\/tags\/v/}" >> "$GITHUB_OUTPUT"
+
+  build-application:
+    runs-on: ubuntu-22.04
+    needs: generating-version
+    strategy:
+      matrix:
+        dotnet-version: [ '8.0.x', '9.0.x' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@5
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - env: 
+          VERSION: ${{ needs.generating-version.outputs.generated-version }}
+        
+      - name: Build projects
+        run: dotnet build -c "Release" /p:AssemblyVersion=${{ env.VERSION }} /p:InformationalVersion=${{ env.VERSION }}
+          
+  unit-tests:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -20,10 +48,6 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
+        dotnet-version: ${{ matrix.dotnet-version }}
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test "./Nerdolando.Bff-Testing.sln" --no-build --verbosity normal
