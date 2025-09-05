@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerdolando.Bff.Abstractions", "src\Nerdolando.Bff.Abstractions\Nerdolando.Bff.Abstractions.csproj", "{F58BD51E-994E-8318-4A01-642B27A68599}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerdolando.Bff.AspNetCore", "src\Nerdolando.Bff.AspNetCore\Nerdolando.Bff.AspNetCore.csproj", "{9886DE1E-F5AE-6849-CFA1-182884A7FDF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerdolando.Bff.Components", "src\Nerdolando.Bff.Components\Nerdolando.Bff.Components.csproj", "{7DD09B37-1F2D-03CC-0CEA-CE85E887E912}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TokenStorageLibs", "TokenStorageLibs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerdolando.Bff.Storage.Sqlite", "src\TokenStorageLibs\Nerdolando.Bff.Storage.Sqlite\Nerdolando.Bff.Storage.Sqlite.csproj", "{A3A2CAA0-88AC-865E-1DD3-1E67662A3BB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{294C89D9-1934-4C8E-9090-89A52188E545}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerdolando.Bff.AspNetCore.Tests", "tests\UnitTests\Nerdolando.Bff.AspNetCore.Tests\Nerdolando.Bff.AspNetCore.Tests.csproj", "{FF18F91B-BCA9-3C91-4319-FBF264CB959B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F58BD51E-994E-8318-4A01-642B27A68599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58BD51E-994E-8318-4A01-642B27A68599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F58BD51E-994E-8318-4A01-642B27A68599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F58BD51E-994E-8318-4A01-642B27A68599}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9886DE1E-F5AE-6849-CFA1-182884A7FDF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9886DE1E-F5AE-6849-CFA1-182884A7FDF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9886DE1E-F5AE-6849-CFA1-182884A7FDF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9886DE1E-F5AE-6849-CFA1-182884A7FDF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DD09B37-1F2D-03CC-0CEA-CE85E887E912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD09B37-1F2D-03CC-0CEA-CE85E887E912}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD09B37-1F2D-03CC-0CEA-CE85E887E912}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD09B37-1F2D-03CC-0CEA-CE85E887E912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3A2CAA0-88AC-865E-1DD3-1E67662A3BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3A2CAA0-88AC-865E-1DD3-1E67662A3BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3A2CAA0-88AC-865E-1DD3-1E67662A3BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3A2CAA0-88AC-865E-1DD3-1E67662A3BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF18F91B-BCA9-3C91-4319-FBF264CB959B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF18F91B-BCA9-3C91-4319-FBF264CB959B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF18F91B-BCA9-3C91-4319-FBF264CB959B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF18F91B-BCA9-3C91-4319-FBF264CB959B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A3A2CAA0-88AC-865E-1DD3-1E67662A3BB2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{FF18F91B-BCA9-3C91-4319-FBF264CB959B} = {294C89D9-1934-4C8E-9090-89A52188E545}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E30E83F4-14BD-4EA1-A6A8-CC1DAED85276}
+	EndGlobalSection
+EndGlobal
