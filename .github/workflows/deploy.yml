@@ -6,6 +6,8 @@ name: Deploy
 on:
   release:
     types: [created]
+env:
+  NUGET_DIR: ./packages
 
 jobs:
   generating-version:
@@ -35,19 +37,19 @@ jobs:
           VERSION: ${{ needs.generating-version.outputs.generated-version }}
         
       - name: Build projects
-        run: dotnet build "./Nerdolando.Bff-Testing.sln" -c "Release" /p:AssemblyVersion=${{ env.VERSION }} /p:InformationalVersion=${{ env.VERSION }}
+        run: dotnet build "./${{ env.TEST_SOLUTION }}" -c "Release" /p:AssemblyVersion=${{ env.VERSION }} /p:InformationalVersion=${{ env.VERSION }}
 
       - name: Test
-        run: dotnet test "./Nerdolando.Bff-Testing.sln" --no-build --no-restore --verbosity normal
+        run: dotnet test "./${{ env.TEST_SOLUTION }}" --no-build --no-restore --verbosity normal
 
       - name: Pack projects
-        run: dotnet pack -o "./packages" --no-build --no-restore --include-symbols --include-source
+        run: dotnet pack "./${{ env.TEST_SOLUTION }}" -o "${{ env.NUGET_DIR }}" --no-build --no-restore --include-symbols --include-source
         
       - name: Uploading artifacts
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: build-artifact
-          path: ./src/**/Release/*
+          name: packages-artifact
+          path: ${{ env.NUGET_DIR }}
           retention-days: 1
           overwrite: true          
           
@@ -59,17 +61,26 @@ jobs:
         dotnet-version: [ '8.0.x', '9.0.x' ]
 
     steps:
-    - uses: actions/checkout@5
     - name: Downloading build artifact
       uses: actions/download-artifact@v5.0.0
       with:
-        name: build-artifact
+        name: packages-artifact
         merge-multiple: true
+        path: ${{ env.NUGET_DIR }}
     - run: ls -R
         
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
-    - name: Pack projects
-      run: dotnet pack -o "./packages" --no-build --no-restore --include-symbols --include-source
+    - name: Publish packages
+      run: |
+          foreach($file in (Get-ChildItem "${{ env.NUGET_DIR }}" -Recurse -Include *.nupkg)) {
+              dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }
+    - name: Publish symbols
+      run: |
+          foreach($file in (Get-ChildItem "${{ env.NUGET_DIR }}" -Recurse -Include *.snupkg)) {
+              dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }
+
