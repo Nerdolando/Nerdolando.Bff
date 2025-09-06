@@ -2,6 +2,9 @@
   <PropertyGroup>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Description>Abstractions for Nerdolando.Bff package</Description>
+    <PackageProjectUrl>https://github.com/Nerdolando/Nerdolando.Bff</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Nerdolando/Nerdolando.Bff</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

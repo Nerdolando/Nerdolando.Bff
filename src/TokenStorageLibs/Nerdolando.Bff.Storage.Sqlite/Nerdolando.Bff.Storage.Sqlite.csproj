@@ -11,6 +11,8 @@
     <PackageIcon>bff-database.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>bff,sqlite,storage</PackageTags>
+    <PackageProjectUrl>https://github.com/Nerdolando/Nerdolando.Bff</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Nerdolando/Nerdolando.Bff</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

@@ -6,6 +6,8 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/Nerdolando/Nerdolando.Bff</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Nerdolando/Nerdolando.Bff</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

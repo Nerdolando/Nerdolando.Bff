@@ -14,11 +14,13 @@ It's been built also with best security practices in mind.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bff.png</PackageIcon>
     <PackageTags>bff,backend,frontend,yarp,aspi</PackageTags>
+    <PackageProjectUrl>https://github.com/Nerdolando/Nerdolando.Bff</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Nerdolando/Nerdolando.Bff</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
-    <InternalsVisibleTo Include="DynamicProxyGenAssembly2"/>
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
   </ItemGroup>
 
   <ItemGroup>
