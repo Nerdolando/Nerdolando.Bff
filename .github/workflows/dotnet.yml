@@ -25,9 +25,7 @@ jobs:
         dotnet-version: ${{ matrix.dotnet-version }}
     - name: Display dotnet version
       run: dotnet --version
-    - name: Restore dependencies
-      run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ".\Nerdolando.Bff.sln" 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ".\Nerdolando.Bff.sln"  --no-build --verbosity normal
