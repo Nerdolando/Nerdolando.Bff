@@ -18,7 +18,7 @@ jobs:
         id: version_step
         run: echo "version=${GITHUB_REF/refs\/tags\/v/}" >> "$GITHUB_OUTPUT"
 
-  build-application:
+  build-test:
     runs-on: ubuntu-22.04
     needs: generating-version
     strategy:
@@ -35,19 +35,41 @@ jobs:
           VERSION: ${{ needs.generating-version.outputs.generated-version }}
         
       - name: Build projects
-        run: dotnet build -c "Release" /p:AssemblyVersion=${{ env.VERSION }} /p:InformationalVersion=${{ env.VERSION }}
+        run: dotnet build "./Nerdolando.Bff-Testing.sln" -c "Release" /p:AssemblyVersion=${{ env.VERSION }} /p:InformationalVersion=${{ env.VERSION }}
+
+      - name: Test
+        run: dotnet test "./Nerdolando.Bff-Testing.sln" --no-build --no-restore --verbosity normal
+
+      - name: Pack projects
+        run: dotnet pack -o "./packages" --no-build --no-restore --include-symbols --include-source
+        
+      - name: Uploading artifacts
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: build-artifact
+          path: ./src/**/Release/*
+          retention-days: 1
+          overwrite: true          
           
-  unit-tests:
+  deploy:
+    needs: build-test
     runs-on: ubuntu-22.04
     strategy:
       matrix:
         dotnet-version: [ '8.0.x', '9.0.x' ]
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@5
+    - name: Downloading build artifact
+      uses: actions/download-artifact@v5.0.0
+      with:
+        name: build-artifact
+        merge-multiple: true
+    - run: ls -R
+        
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
-    - name: Test
-      run: dotnet test "./Nerdolando.Bff-Testing.sln" --no-build --verbosity normal
+    - name: Pack projects
+      run: dotnet pack -o "./packages" --no-build --no-restore --include-symbols --include-source
