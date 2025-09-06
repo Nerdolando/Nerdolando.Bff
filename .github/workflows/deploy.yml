@@ -83,4 +83,12 @@ jobs:
           foreach($file in (Get-ChildItem "${{ env.NUGET_DIR }}" -Recurse -Include *.snupkg)) {
               dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
           }
+  cleanup:
+    runs-on: ubuntu-22.04
+    needs: deploy
+    steps:
+      - name: Delete artifacts
+        uses: GeekyEggo/delete-artifact@v5.1.0
+        with:
+          name: packages-artifact
 
