@@ -43,10 +43,10 @@ jobs:
         run: dotnet build "./${{ env.TEST_SOLUTION }}" -c "Release" /p:AssemblyVersion=${{ env.VERSION }} /p:InformationalVersion=${{ env.VERSION }}
 
       - name: Test
-        run: dotnet test "./${{ env.TEST_SOLUTION }}" --no-build --no-restore --verbosity normal
+        run: dotnet test "./${{ env.TEST_SOLUTION }}" --verbosity normal
 
       - name: Pack projects
-        run: dotnet pack "./${{ env.TEST_SOLUTION }}" -o "${{ env.NUGET_DIR }}" --version-suffix "${{ env.VERSION }}" --no-build --no-restore --include-symbols --include-source
+        run: dotnet pack "./${{ env.TEST_SOLUTION }}" -o "${{ env.NUGET_DIR }}" -c "Release" --version-suffix "${{ env.VERSION }}" --no-build --no-restore --include-symbols --include-source
         
       - name: Uploading artifacts
         uses: actions/upload-artifact@v4.6.2
