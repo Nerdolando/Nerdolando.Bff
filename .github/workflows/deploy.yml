@@ -23,6 +23,8 @@ jobs:
   build-test:
     runs-on: ubuntu-22.04
     needs: generating-version
+    env: 
+      VERSION: ${{ needs.generating-version.outputs.generated-version }}
     strategy:
       matrix:
         dotnet-version: [ '8.0.x', '9.0.x' ]
@@ -33,8 +35,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
-      - env: 
-          VERSION: ${{ needs.generating-version.outputs.generated-version }}
         
       - name: Build projects
         run: dotnet build "./${{ env.TEST_SOLUTION }}" -c "Release" /p:AssemblyVersion=${{ env.VERSION }} /p:InformationalVersion=${{ env.VERSION }}
