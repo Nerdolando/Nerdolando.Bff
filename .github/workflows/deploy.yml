@@ -10,6 +10,7 @@ on:
     types: [created]
 env:
   NUGET_DIR: ./packages
+  TEST_SOLUTION: Nerdolando.Bff-Testing.sln
 
 jobs:
   generating-version:
