@@ -3,6 +3,9 @@
 
 name: Deploy
 
+permissions:
+  contents: read
+
 on:
   release:
     types: [created]
