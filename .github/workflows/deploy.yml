@@ -59,9 +59,6 @@ jobs:
   deploy:
     needs: ['build-test', 'generating-version']
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        dotnet-version: [ '8.0.x', '9.0.x' ]
 
     steps:
     - name: Downloading build artifact
@@ -75,17 +72,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ matrix.dotnet-version }}
+        dotnet-version: '9.0.x'
     - name: Publish packages
+      shell: pwsh
       run: |
-          foreach($file in (Get-ChildItem "${{ env.NUGET_DIR }}" -Recurse -Include *.nupkg)) {
+            foreach($file in (Get-ChildItem "${{ env.NUGET_DIR }}")) {
               dotnet nuget push $file --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-          }
-    - name: Publish symbols
-      run: |
-          foreach($file in (Get-ChildItem "${{ env.NUGET_DIR }}" -Recurse -Include *.snupkg)) {
-              dotnet nuget push $file --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-          }
+            }
   cleanup:
     runs-on: ubuntu-22.04
     needs: deploy
