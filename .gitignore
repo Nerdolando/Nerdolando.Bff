@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /internal-files
+/samples/Bff/bff_storage.db
+/samples/Bff/bff_storage.db-shm
+/samples/Bff/bff_storage.db-wal
