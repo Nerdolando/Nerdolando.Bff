@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Nerdolando.Bff.Components.Services
 {
-    internal class BffAuthenticationStateProvider(IHttpClientFactory _httpClientFactory, 
+    internal class BffAuthenticationStateProvider(IHttpClientFactory _httpClientFactory,
         IOptionsMonitor<ClientBffOptions> _optionsMonitor) : AuthenticationStateProvider, IAuthenticationStateRefresher
     {
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()

@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Nerdolando.Bff.Abstractions;
 using System.Collections.Concurrent;
 
 namespace Nerdolando.Bff.AspNetCore.Options;
@@ -47,5 +45,5 @@ internal sealed class BffOpenIdConnectPostConfigureOptions : IPostConfigureOptio
         }
     }
 
-    
+
 }

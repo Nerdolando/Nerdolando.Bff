@@ -1,6 +1,6 @@
-﻿using System.Data;
+﻿using Nerdolando.Bff.Abstractions;
+using System.Data;
 using System.Data.Common;
-using Nerdolando.Bff.Abstractions;
 
 namespace Nerdolando.Bff.Storage.Sqlite.Services
 {
@@ -41,7 +41,7 @@ namespace Nerdolando.Bff.Storage.Sqlite.Services
 
             // Upsert (SQLite syntax)
             using var cmd = connection.CreateCommand();
-            cmd.CommandText = 
+            cmd.CommandText =
                 """
                     INSERT INTO tokens (session_id, access_token, refresh_token, expires_at)
                     VALUES (@sid, @acc, @ref, @exp)

@@ -17,7 +17,7 @@ namespace Nerdolando.Bff.AspNetCore.Options
         private OpenIdConnectEvents GetInner<T>(BaseContext<T> context)
             where T : RemoteAuthenticationOptions
         {
-            if (_inner != null) 
+            if (_inner != null)
                 return _inner;
 
             var scheme = context.Scheme.Name;
@@ -71,8 +71,8 @@ namespace Nerdolando.Bff.AspNetCore.Options
         public static async Task ExecuteBffTokenValidatedAsync(TokenValidatedContext context)
         {
             ArgumentNullException.ThrowIfNull(context);
-            
-            if(context.TokenEndpointResponse == null)
+
+            if (context.TokenEndpointResponse == null)
                 return;
 
             int expiresInSeconds = 0;

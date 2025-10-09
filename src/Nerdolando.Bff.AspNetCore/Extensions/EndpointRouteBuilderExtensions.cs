@@ -35,6 +35,11 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
                 {
                     var refresher = transformContext.HttpContext.RequestServices.GetRequiredService<AuthRefresher>();
                     var userToken = await refresher.GetOrRefreshAuthAsync().ConfigureAwait(false);
+                    if (userToken == null)
+                    {
+                        transformContext.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return;
+                    }
 
                     transformContext.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userToken.AccessToken);
                 });
@@ -51,8 +56,16 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
 
             group.MapPost(config.BffLogoutPath, (string front, string? returnUrl, HttpContext httpContext) => Logout(front, returnUrl, httpContext, config));
 
-            group.MapGet(config.BffUserInfoPath, (HttpContext httpContext) =>
+            group.MapGet(config.BffUserInfoPath, async (HttpContext httpContext) =>
             {
+                var refresher = httpContext.RequestServices.GetRequiredService<AuthRefresher>();
+                var userToken = await refresher.GetOrRefreshAuthAsync().ConfigureAwait(false);
+
+                if (userToken == null)
+                {
+                    return Results.Unauthorized();
+                }
+
                 var identityDto = new IdentityDto
                 {
                     AuthenticationType = httpContext.User.Identity?.AuthenticationType ?? string.Empty,
@@ -66,9 +79,9 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
             return group;
         }
 
-        internal static IResult Login(string front, 
-            string? returnUrl, 
-            HttpContext httpContext, 
+        internal static IResult Login(string front,
+            string? returnUrl,
+            HttpContext httpContext,
             BffEndpointConfig config)
         {
             var redirectUri = BuildRedirectUri(front, returnUrl ?? "/", httpContext);
@@ -82,9 +95,9 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
             return TypedResults.Challenge(authenticationProperties, [config.ChallengeAuthenticationScheme]);
         }
 
-        internal static IResult Logout(string front, 
-            string? returnUrl, 
-            HttpContext httpContext, 
+        internal static IResult Logout(string front,
+            string? returnUrl,
+            HttpContext httpContext,
             BffEndpointConfig config)
         {
             var redirectUri = BuildRedirectUri(front, returnUrl ?? "/", httpContext);

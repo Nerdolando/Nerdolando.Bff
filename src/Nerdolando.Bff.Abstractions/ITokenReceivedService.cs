@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace Nerdolando.Bff.Abstractions
+﻿namespace Nerdolando.Bff.Abstractions
 {
     /// <summary>
     /// 

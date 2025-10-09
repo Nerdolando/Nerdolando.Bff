@@ -7,7 +7,7 @@ namespace Nerdolando.Bff.AspNetCore.Tests
     public class AuthRefresherTests
     {
         [Fact]
-        public async Task GetOrRefreshAuth_NoToken_ReturnsEmptyToken() 
+        public async Task GetOrRefreshAuth_NoToken_ReturnsEmptyToken()
         {
             // Arrange
             var sessionIdProviderMock = Substitute.For<ISessionIdProvider>();
@@ -17,9 +17,9 @@ namespace Nerdolando.Bff.AspNetCore.Tests
             var userTokenStorageMock = Substitute.For<IUserTokenStorage>();
             userTokenStorageMock.GetTokenAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult<UserToken?>(null));
-            
-            var authRefresher = new AuthRefresher(sessionIdProviderMock, 
-                userTokenStorageMock, 
+
+            var authRefresher = new AuthRefresher(sessionIdProviderMock,
+                userTokenStorageMock,
                 null!);
 
             // Act
@@ -82,15 +82,15 @@ namespace Nerdolando.Bff.AspNetCore.Tests
                 .Returns(userToken);
 
             var tokenRefresherMock = Substitute.For<ITokenRefreshHandler>();
-            var authRefresher = new AuthRefresher(sessionIdProviderMock, 
-                userTokenStorageMock, 
+            var authRefresher = new AuthRefresher(sessionIdProviderMock,
+                userTokenStorageMock,
                 tokenRefresherMock);
 
             // Act
             var newUserToken = await authRefresher.GetOrRefreshAuthAsync();
-            
+
             // Assert
-            Assert.NotNull(newUserToken);            
+            Assert.NotNull(newUserToken);
             var record = await Record.ExceptionAsync(async () => await tokenRefresherMock.DidNotReceiveWithAnyArgs().HandleAsync(default!));
             Assert.Null(record);
             Assert.Equivalent(newUserToken, userToken);
@@ -131,8 +131,8 @@ namespace Nerdolando.Bff.AspNetCore.Tests
             tokenRefresherMock.HandleAsync(userToken)
                 .Returns(newUserToken);
 
-            var authRefresher = new AuthRefresher(sessionIdProviderMock, 
-                userTokenStorageMock, 
+            var authRefresher = new AuthRefresher(sessionIdProviderMock,
+                userTokenStorageMock,
                 tokenRefresherMock);
 
             // Act

@@ -7,7 +7,7 @@ namespace Nerdolando.Bff.Abstractions
     /// </summary>
     public interface IBffBuilder
     {
-      
+
         /// <summary>
         /// Services collection
         /// </summary>
