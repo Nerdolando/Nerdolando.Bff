@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 
 namespace Nerdolando.Bff.AspNetCore.Services
 {
-    internal sealed class DefaultTokenRefreshHandler(IOptionsMonitor<OpenIdConnectOptions> _oidcOptionsMonitor, 
+    internal sealed class DefaultTokenRefreshHandler(IOptionsMonitor<OpenIdConnectOptions> _oidcOptionsMonitor,
         IOptions<BffConfig> _bffConfig) : ITokenRefreshHandler
     {
         public async Task<UserToken?> HandleAsync(UserToken userToken)
@@ -16,10 +16,10 @@ namespace Nerdolando.Bff.AspNetCore.Services
             EnsureValidOptions(oidcOptions);
 
             OpenIdConnectMessage? refreshTokenMessage = await SendRefreshTokenRequestAsync(oidcOptions, userToken.RefreshToken!).ConfigureAwait(false);
-            if(refreshTokenMessage != null) 
+            if (refreshTokenMessage != null)
             {
                 int expiresIn = 3600;
-                if(int.TryParse(refreshTokenMessage.ExpiresIn, out var parsedValue))
+                if (int.TryParse(refreshTokenMessage.ExpiresIn, out var parsedValue))
                     expiresIn = parsedValue;
 
                 return new UserToken
@@ -37,8 +37,8 @@ namespace Nerdolando.Bff.AspNetCore.Services
         private OpenIdConnectOptions GetOIDCOptions()
         {
             var candidate = _oidcOptionsMonitor.CurrentValue;
-            if(string.IsNullOrWhiteSpace(candidate.ClientId) || string.IsNullOrWhiteSpace(candidate.ClientSecret))
-               return _oidcOptionsMonitor.Get(_bffConfig.Value.Endpoints.ChallengeAuthenticationScheme);
+            if (string.IsNullOrWhiteSpace(candidate.ClientId) || string.IsNullOrWhiteSpace(candidate.ClientSecret))
+                return _oidcOptionsMonitor.Get(_bffConfig.Value.Endpoints.ChallengeAuthenticationScheme);
             else
                 return candidate;
         }
@@ -57,11 +57,11 @@ namespace Nerdolando.Bff.AspNetCore.Services
             if (candidate != null)
                 return candidate.ToString();
 
-            if(options.ConfigurationManager == null)
+            if (options.ConfigurationManager == null)
                 throw new InvalidOperationException("ConfigurationManager is not configured in OpenIdConnectOptions. Either OpenIdConnectOptions.ConfigurationManager or BffConfig.Endpoints.RefreshTokenEndpoint must be configured");
 
             var oidcConfig = await options.ConfigurationManager.GetConfigurationAsync(CancellationToken.None).ConfigureAwait(false);
-            if(oidcConfig == null)
+            if (oidcConfig == null)
                 throw new InvalidOperationException("Unable to retrieve OpenIdConnect configuration. Ensure that metadata endpoint is valid or simply configure BffConfig.Endpoints.RefreshTokenEndpoint");
 
             if (string.IsNullOrWhiteSpace(oidcConfig.TokenEndpoint))

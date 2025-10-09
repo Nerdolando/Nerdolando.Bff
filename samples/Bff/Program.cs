@@ -25,7 +25,7 @@ namespace Bff
                 o.ResponseType = OpenIdConnectResponseType.Code;
                 o.Scope = "openid profile email offline_access";
                 o.SkipCookieMiddleware = false;
-                
+
 
                 o.OpenIdConnectEvents = new OpenIdConnectEvents();
                 o.OpenIdConnectEvents.OnRedirectToIdentityProvider = context =>

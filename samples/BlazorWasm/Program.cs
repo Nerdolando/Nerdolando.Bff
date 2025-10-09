@@ -25,7 +25,7 @@ namespace BlazorWasm
             {
                 c.BaseAddress = new Uri("https://localhost:7133");
             }).AddCredentialCookie();
-            
+
 
             await builder.Build().RunAsync();
         }

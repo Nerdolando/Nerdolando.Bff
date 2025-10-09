@@ -4,7 +4,7 @@ using Nerdolando.Bff.Components.Models;
 
 namespace Nerdolando.Bff.Components.Services
 {
-    internal class LogOutRequest(IHttpClientFactory _httpClientFactory, 
+    internal class LogOutRequest(IHttpClientFactory _httpClientFactory,
         IAuthenticationStateRefresher _authStateRefresher,
         IOptionsMonitor<ClientBffOptions> _optionsMonitor) : ILogOutRequest
     {

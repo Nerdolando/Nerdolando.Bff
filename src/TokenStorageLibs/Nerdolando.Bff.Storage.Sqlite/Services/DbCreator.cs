@@ -38,7 +38,7 @@ namespace Nerdolando.Bff.Storage.Sqlite.Services
 
         private static async Task CreateDbSchema(DbConnection connection, CancellationToken ct)
         {
-            var createCommand = 
+            var createCommand =
                 """
                     CREATE TABLE IF NOT EXISTS tokens (
                         session_id TEXT PRIMARY KEY UNIQUE,
@@ -46,14 +46,14 @@ namespace Nerdolando.Bff.Storage.Sqlite.Services
                         refresh_token TEXT NOT NULL,
                         expires_at TEXT NOT NULL
                 );
-                """;            
-            
+                """;
+
             await ExecAsync(connection, createCommand, ct).ConfigureAwait(false);
         }
 
         private static async Task DropSchema(DbConnection connection, CancellationToken ct)
         {
-            var dropCommand = 
+            var dropCommand =
                 """
                     DROP TABLE IF EXISTS tokens;
                 """;

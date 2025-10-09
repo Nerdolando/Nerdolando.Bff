@@ -56,6 +56,6 @@ namespace Nerdolando.Bff.Components.Extensions
             });
 
             return services;
-        }   
+        }
     }
 }
