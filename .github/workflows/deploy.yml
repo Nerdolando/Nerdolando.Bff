@@ -2,12 +2,15 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
 name: Deploy
+permissions:
+  contents: write
 
 on:
   release:
     types: [created]
 env:
   NUGET_DIR: ./packages
+  TEST_SOLUTION: Nerdolando.Bff-Testing.sln
 
 jobs:
   generating-version:
@@ -23,27 +26,27 @@ jobs:
   build-test:
     runs-on: ubuntu-22.04
     needs: generating-version
+    env: 
+      VERSION: ${{ needs.generating-version.outputs.generated-version }}
     strategy:
       matrix:
         dotnet-version: [ '8.0.x', '9.0.x' ]
     steps:
       - name: Checkout
-        uses: actions/checkout@5
+        uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
-      - env: 
-          VERSION: ${{ needs.generating-version.outputs.generated-version }}
         
       - name: Build projects
         run: dotnet build "./${{ env.TEST_SOLUTION }}" -c "Release" /p:AssemblyVersion=${{ env.VERSION }} /p:InformationalVersion=${{ env.VERSION }}
 
       - name: Test
-        run: dotnet test "./${{ env.TEST_SOLUTION }}" --no-build --no-restore --verbosity normal
+        run: dotnet test "./${{ env.TEST_SOLUTION }}" --verbosity normal
 
       - name: Pack projects
-        run: dotnet pack "./${{ env.TEST_SOLUTION }}" -o "${{ env.NUGET_DIR }}" --no-build --no-restore --include-symbols --include-source
+        run: dotnet pack "./${{ env.TEST_SOLUTION }}" -o "${{ env.NUGET_DIR }}" -c "Release" --version-suffix "${{ env.VERSION }}" --no-build --no-restore --include-symbols --include-source
         
       - name: Uploading artifacts
         uses: actions/upload-artifact@v4.6.2
@@ -54,11 +57,8 @@ jobs:
           overwrite: true          
           
   deploy:
-    needs: build-test
+    needs: ['build-test', 'generating-version']
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        dotnet-version: [ '8.0.x', '9.0.x' ]
 
     steps:
     - name: Downloading build artifact
@@ -72,17 +72,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ matrix.dotnet-version }}
+        dotnet-version: '9.0.x'
     - name: Publish packages
+      shell: pwsh
       run: |
-          foreach($file in (Get-ChildItem "${{ env.NUGET_DIR }}" -Recurse -Include *.nupkg)) {
-              dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-          }
-    - name: Publish symbols
-      run: |
-          foreach($file in (Get-ChildItem "${{ env.NUGET_DIR }}" -Recurse -Include *.snupkg)) {
-              dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-          }
+            foreach($file in (Get-ChildItem "${{ env.NUGET_DIR }}")) {
+              dotnet nuget push $file --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            }
   cleanup:
     runs-on: ubuntu-22.04
     needs: deploy

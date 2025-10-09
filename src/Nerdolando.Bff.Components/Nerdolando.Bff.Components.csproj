@@ -6,6 +6,11 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/Nerdolando/Nerdolando.Bff</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Nerdolando/Nerdolando.Bff</RepositoryUrl>
+    <PackageIcon>bff-blazor.png</PackageIcon>
+    <PackageTags>bff, blazor</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +34,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bff-blazor.png" Pack="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
