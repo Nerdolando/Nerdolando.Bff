@@ -17,7 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       fileVersion: ${{ steps.ver.outputs.fileVersion }}
-      assemblyVersion: ${{ steps.ver.outputs.assemblyVersion }}
+      fullVersion: ${{ steps.ver.outputs.fullVersion }}
+      versionSuffix: ${{ steps.ver.outputs.versionSuffix }}
 
     steps:
       - name: Generate versions from tag
@@ -28,24 +29,29 @@ jobs:
           fi
 
           # zdejmij wiod¹ce 'v' (jeœli jest)
-          VERSION_FULL="${GITHUB_REF_NAME#v}"
+          FULL_VERSION="${GITHUB_REF_NAME#v}"
 
           # czêœæ przed pierwszym '-' -> 1.0.2
           FILE_VERSION="${VERSION_FULL%%-*}"
 
+          VERSION_SUFFIX="${FULL_VERSION#${FILE_VERSION}}"
+          VERSION_SUFFIX="${VERSION_SUFFIX#-}"
+
           echo "fileVersion=$FILE_VERSION" >> "$GITHUB_OUTPUT"
-          echo "assemblyVersion=$VERSION_FULL" >> "$GITHUB_OUTPUT"
+          echo "fullVersion=$FULL_VERSION" >> "$GITHUB_OUTPUT"
+          echo "versionSuffix=$VERSION_SUFFIX" >> "$GITHUB_OUTPUT"
 
           echo "Computed:"
           echo "  fileVersion=$FILE_VERSION"
-          echo "  assemblyVersion=$VERSION_FULL"
+          echo "  fullVersion=$FULL_VERSION"
 
   build-test:
     runs-on: ubuntu-22.04
     needs: generating-version
     env: 
       FILE_VERSION: ${{ needs.generating-version.outputs.fileVersion }}
-      ASSEMBLY_VERSION: ${{ needs.generating-version.outputs.assemblyVersion }}
+      FULL_VERSION: ${{ needs.generating-version.outputs.fullVersion }}
+      VERSION_SUFFIX: ${{ needs.generating-version.outputs.versionSuffix }}
     strategy:
       matrix:
         dotnet-version: [ '8.0.x', '9.0.x' ]
@@ -58,13 +64,18 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
         
       - name: Build projects
-        run: dotnet build "./${{ env.TEST_SOLUTION }}" -c "Release" /p:AssemblyVersion=${{ env.FILE_VERSION }} /p:InformationalVersion=${{ env.ASSEMBLY_VERSION }}
+        run: dotnet build "./${{ env.TEST_SOLUTION }}" -c "Release" /p:AssemblyVersion=${{ env.FILE_VERSION }} /p:InformationalVersion=${{ env.FULL_VERSION }}
 
       - name: Test
         run: dotnet test "./${{ env.TEST_SOLUTION }}" --verbosity normal
 
       - name: Pack projects
-        run: dotnet pack "./${{ env.TEST_SOLUTION }}" -o "${{ env.NUGET_DIR }}" -c "Release" --version-suffix "${{ env.FILE_VERSION }}" --no-build --no-restore --include-symbols --include-source
+        run: > 
+            dotnet pack "./${{ env.TEST_SOLUTION }}" 
+            -o "${{ env.NUGET_DIR }}" 
+            -c "Release" 
+            /p:VersionPrefix=${{ env.FILE_VERSION }}
+            --version-suffix "${{ env.VERSION_SUFFIX }}" --no-build --no-restore --include-symbols --include-source
         
       - name: Uploading artifacts
         uses: actions/upload-artifact@v4.6.2
