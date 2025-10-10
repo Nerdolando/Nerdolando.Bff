@@ -16,18 +16,36 @@ jobs:
   generating-version:
     runs-on: ubuntu-latest
     outputs:
-      generated-version: ${{ steps.version_step.outputs.version }} 
+      fileVersion: ${{ steps.ver.outputs.fileVersion }}
+      assemblyVersion: ${{ steps.ver.outputs.assemblyVersion }}
 
     steps:
-      - name: Set VERSION variable from tag
-        id: version_step
-        run: echo "version=${GITHUB_REF/refs\/tags\/v/}" >> "$GITHUB_OUTPUT"
+      - name: Generate versions from tag
+        id: ver
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" != "tag" ]]; then
+            echo "This workflow expected a tag ref."; exit 1
+          fi
+
+          # zdejmij wiod¹ce 'v' (jeœli jest)
+          VERSION_FULL="${GITHUB_REF_NAME#v}"
+
+          # czêœæ przed pierwszym '-' -> 1.0.2
+          FILE_VERSION="${VERSION_FULL%%-*}"
+
+          echo "fileVersion=$FILE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "assemblyVersion=$VERSION_FULL" >> "$GITHUB_OUTPUT"
+
+          echo "Computed:"
+          echo "  fileVersion=$FILE_VERSION"
+          echo "  assemblyVersion=$VERSION_FULL"
 
   build-test:
     runs-on: ubuntu-22.04
     needs: generating-version
     env: 
-      VERSION: ${{ needs.generating-version.outputs.generated-version }}
+      FILE_VERSION: ${{ needs.generating-version.outputs.fileVersion }}
+      ASSEMBLY_VERSION: ${{ needs.generating-version.outputs.assemblyVersion }}
     strategy:
       matrix:
         dotnet-version: [ '8.0.x', '9.0.x' ]
@@ -40,13 +58,13 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
         
       - name: Build projects
-        run: dotnet build "./${{ env.TEST_SOLUTION }}" -c "Release" /p:AssemblyVersion=${{ env.VERSION }} /p:InformationalVersion=${{ env.VERSION }}
+        run: dotnet build "./${{ env.TEST_SOLUTION }}" -c "Release" /p:AssemblyVersion=${{ env.FILE_VERSION }} /p:InformationalVersion=${{ env.ASSEMBLY_VERSION }}
 
       - name: Test
         run: dotnet test "./${{ env.TEST_SOLUTION }}" --verbosity normal
 
       - name: Pack projects
-        run: dotnet pack "./${{ env.TEST_SOLUTION }}" -o "${{ env.NUGET_DIR }}" -c "Release" --version-suffix "${{ env.VERSION }}" --no-build --no-restore --include-symbols --include-source
+        run: dotnet pack "./${{ env.TEST_SOLUTION }}" -o "${{ env.NUGET_DIR }}" -c "Release" --version-suffix "${{ env.FILE_VERSION }}" --no-build --no-restore --include-symbols --include-source
         
       - name: Uploading artifacts
         uses: actions/upload-artifact@v4.6.2
