@@ -1,5 +1,6 @@
 [![Build and test](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/dotnet.yml)
 [![Deploy](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/deploy.yml/badge.svg)](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/deploy.yml)
+[![License](https://img.shields.io/github/license/Nerdolando/Nerdolando.Bff.svg)](LICENSE)
 
 # Problem - WHY
 SPA Front applications should not keep access tokens in JS. They should manage authZ/authN using concept called "Backend For Frontend". But, manually creating BFF app with YARP + OpenIdConnect it's a cumbersome work full of pitfalls.
