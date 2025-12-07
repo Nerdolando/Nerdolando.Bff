@@ -1,3 +1,4 @@
+[![Build and test](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/dotnet.yml)
 [![Deploy](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/deploy.yml/badge.svg)](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/deploy.yml)
 
 # Problem - WHY
