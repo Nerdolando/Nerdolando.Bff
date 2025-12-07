@@ -1,3 +1,5 @@
+[![Deploy](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/deploy.yml/badge.svg)](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/deploy.yml)
+
 # Problem - WHY
 SPA Front applications should not keep access tokens in JS. They should manage authZ/authN using concept called "Backend For Frontend". But, manually creating BFF app with YARP + OpenIdConnect it's a cumbersome work full of pitfalls.
 Solution: `Nerdolando.Bff` gives you ready to use BFF library that hosts cookie, proxies to your API, and stores tokens in SAFE storage. It also gives you refresh token flow out of the box.
