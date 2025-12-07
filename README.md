@@ -1,3 +1,13 @@
+# Problem - WHY
+SPA Front applications should not keep access tokens in JS. They should manage authZ/authN using concept called "Backend For Frontend". But, manually creating BFF app with YARP + OpenIdConnect it's a cumbersome work full of pitfalls.
+Solution: `Nerdolando.Bff` gives you ready to use BFF library that hosts cookie, proxies to your API, and stores tokens in SAFE storage. It also gives you refresh token flow out of the box.
+For whom: for .NET developers creating project with SPA apps who want good, secure and FREE solution out of the box without reading tones of articles :)
+
+## Typical scenarios
+- SPA application in any front framework (REACT, VUE, Angular, Blazor, ...) with OAuth + WebApi
+- Blazor WASM with OAuth + WebApi
+- Multifront app (SPA + admin panel)
+
 # About
 `Nerdolando.Bff` is a library that provides a set of tools and components to help developers build Backend for Frontend (BFF) applications using ASP.NET Core. It aims to simplify the process of creating BFF layers by offering pre-built functionalities and best practices.
 This package is built on top of .NETCore and YARP and leverages Microsoft's OpenIdConnect library.
