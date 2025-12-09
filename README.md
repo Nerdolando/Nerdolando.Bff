@@ -1,6 +1,9 @@
 [![Build and test](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/dotnet.yml)
 [![Deploy](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/deploy.yml/badge.svg)](https://github.com/Nerdolando/Nerdolando.Bff/actions/workflows/deploy.yml)
 [![License](https://img.shields.io/github/license/Nerdolando/Nerdolando.Bff.svg)](LICENSE)
+[![NuGet](https://img.shields.io/nuget/v/Nerdolando.Bff.AspNetCore.svg)](https://www.nuget.org/packages/Nerdolando.Bff.AspNetCore/)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Nerdolando.Bff.AspNetCore.svg)](https://www.nuget.org/packages/Nerdolando.Bff.AspNetCore/)
+
 
 # Nerdolando.Bff
 **Secure Backend-for-Frontend (BFF) for .NET** – built on ASP.NET Core, YARP and OpenIdConnect, with safe token storage and refresh-token flow out of the box.
