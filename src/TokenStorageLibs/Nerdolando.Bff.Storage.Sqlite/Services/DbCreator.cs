@@ -4,7 +4,7 @@ namespace Nerdolando.Bff.Storage.Sqlite.Services
 {
     internal class DbCreator(SqliteConnectionFactory _sqliteConnectionFactory)
     {
-        private const int RequiredVersion = 1;
+        private const int RequiredVersion = 3;
         public async Task CreateDatabaseAsync(CancellationToken ct = default)
         {
             using var connection = await _sqliteConnectionFactory.CreateConnection().ConfigureAwait(false);
@@ -43,7 +43,8 @@ namespace Nerdolando.Bff.Storage.Sqlite.Services
                     CREATE TABLE IF NOT EXISTS tokens (
                         session_id TEXT PRIMARY KEY UNIQUE,
                         access_token TEXT NOT NULL,
-                        refresh_token TEXT NOT NULL,
+                        refresh_token TEXT NULL,
+                        id_token TEXT NULL,
                         expires_at TEXT NOT NULL
                 );
                 """;

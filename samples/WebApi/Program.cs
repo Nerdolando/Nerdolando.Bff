@@ -18,9 +18,10 @@ namespace WebApi
                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-                o.Authority = builder.Configuration["Authentication:Authority"];
                 o.Audience = builder.Configuration["Authentication:Audience"];
+                o.TokenValidationParameters.ValidIssuer = "https://accounts.google.com";
             });
+            
 
             var app = builder.Build();
 

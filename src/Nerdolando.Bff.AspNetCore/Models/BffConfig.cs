@@ -15,5 +15,14 @@
         /// Bff endpoint configuration.
         /// </summary>
         public required BffEndpointConfig Endpoints { get; set; } = new BffEndpointConfig();
+        /// <summary>
+        /// Gets or sets a value indicating whether the ID token should be used as an access token for authorization
+        /// purposes.
+        /// </summary>
+        /// <remarks>When set to <see langword="true"/>, the ID token is used in place of an access token
+        /// to authorize requests. This may be useful in scenarios where the ID token contains all necessary claims for
+        /// access control. Ensure that using the ID token in this way aligns with your security requirements and the
+        /// expectations of downstream services.</remarks>
+        public required bool UseIdTokenAsAccessToken { get; set; } = false;
     }
 }

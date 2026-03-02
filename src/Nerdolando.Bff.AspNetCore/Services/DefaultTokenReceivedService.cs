@@ -11,6 +11,7 @@ namespace Nerdolando.Bff.AspNetCore.Services
                 SessionId = tokenResponse.SessionId,
                 AccessToken = tokenResponse.AccessToken,
                 RefreshToken = tokenResponse.RefreshToken,
+                IdToken = tokenResponse.IdToken,
                 ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(tokenResponse.ExpiresInSeconds)
             };
 

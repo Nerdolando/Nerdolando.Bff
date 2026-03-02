@@ -1,5 +1,6 @@
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Nerdolando.Bff.AspNetCore.Extensions;
@@ -7,7 +8,7 @@ using Nerdolando.Bff.Storage.Sqlite.Extensions;
 
 namespace Bff
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -42,6 +43,27 @@ namespace Bff
                 o.Audience = "api://weather";
             });
 
+            //builder.Services.AddAuthentication(o =>
+            //{
+            //    o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    o.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    o.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    o.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //})
+            //    .AddGoogle(options =>
+            //    {
+            //        builder.Configuration.GetSection("Google").Bind(options);
+            //        options.CallbackPath = new PathString("/auth-callback");
+            //        options.Scope.Clear();
+            //        options.Scope.Add("email");
+            //        options.Scope.Add("profile");
+            //        options.Scope.Add("openid");
+            //        options.AccessType = "offline";
+            //        options.AdditionalAuthorizationParameters["prompt"] = "consent";
+            //        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    })
+            //    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+
             builder.Services.Configure<OpenIdConnectOptions>(o =>
             {
                 o.TokenValidationParameters.NameClaimType = "name";
@@ -53,7 +75,8 @@ namespace Bff
                 {
                     { "local", new Uri("https://localhost:7230") }
                 };
-                options.Endpoints.ChallengeAuthenticationScheme = Auth0Constants.AuthenticationScheme;
+                options.UseIdTokenAsAccessToken = false;
+                options.Endpoints.ChallengeAuthenticationScheme = GoogleDefaults.AuthenticationScheme;
                 options.Endpoints.TargetApiBaseUrl = new Uri("https://localhost:7136");
                 options.Endpoints.TargetApiPath = "/api";
             }).UseSqliteTokenStorage();

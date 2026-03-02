@@ -12,6 +12,9 @@ namespace Nerdolando.Bff.AspNetCore.Services
     {
         public async Task<UserToken?> HandleAsync(UserToken userToken)
         {
+            if (string.IsNullOrWhiteSpace(userToken.RefreshToken))
+                return null;
+            
             var oidcOptions = GetOIDCOptions();
             EnsureValidOptions(oidcOptions);
 
@@ -26,6 +29,7 @@ namespace Nerdolando.Bff.AspNetCore.Services
                 {
                     AccessToken = refreshTokenMessage.AccessToken,
                     RefreshToken = refreshTokenMessage.RefreshToken,
+                    IdToken = refreshTokenMessage.IdToken,
                     ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(expiresIn),
                     SessionId = userToken.SessionId
                 };

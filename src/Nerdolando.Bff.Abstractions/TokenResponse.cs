@@ -12,11 +12,16 @@
         /// <summary>
         /// Access token issued by the identity provider.
         /// </summary>
-        public string AccessToken { get; set; } = null!;
+        public string AccessToken { get; set; } = string.Empty;
         /// <summary>
         /// Refresh token issued by the identity provider.
         /// </summary>
-        public string RefreshToken { get; set; } = null!;
+        public string? RefreshToken { get; set; } = null;
+
+        /// <summary>
+        /// Id token issued by the identity provider, if available.
+        /// </summary>
+        public string? IdToken { get; set; } = null;
         /// <summary>
         /// When access token expires.
         /// </summary>

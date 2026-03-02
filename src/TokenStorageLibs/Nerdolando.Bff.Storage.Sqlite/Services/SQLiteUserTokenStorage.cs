@@ -1,4 +1,5 @@
 ﻿using Nerdolando.Bff.Abstractions;
+using Nerdolando.Bff.Storage.Sqlite.Extensions;
 using System.Data;
 using System.Data.Common;
 
@@ -13,7 +14,7 @@ namespace Nerdolando.Bff.Storage.Sqlite.Services
             try
             {
                 using var cmd = connection.CreateCommand();
-                cmd.CommandText = "SELECT session_id, access_token, refresh_token, expires_at FROM tokens WHERE session_id = @sid LIMIT 1";
+                cmd.CommandText = "SELECT session_id, access_token, refresh_token, id_token, expires_at FROM tokens WHERE session_id = @sid LIMIT 1";
                 AddParameter(cmd, "@sid", sessionId.ToString());
 
                 using var reader = await cmd.ExecuteReaderAsync(ct).ConfigureAwait(false);
@@ -24,7 +25,8 @@ namespace Nerdolando.Bff.Storage.Sqlite.Services
                 {
                     SessionId = Guid.Parse(reader.GetString("session_id")),
                     AccessToken = reader.GetString("access_token"),
-                    RefreshToken = reader.GetString("refresh_token"),
+                    RefreshToken = reader.GetStringOrEmpty("refresh_token"),
+                    IdToken = reader.GetStringOrEmpty("id_token"),
                     ExpiresAt = DateTimeOffset.Parse(reader.GetString("expires_at"), System.Globalization.CultureInfo.InvariantCulture)
                 };
                 return token;
@@ -43,16 +45,18 @@ namespace Nerdolando.Bff.Storage.Sqlite.Services
             using var cmd = connection.CreateCommand();
             cmd.CommandText =
                 """
-                    INSERT INTO tokens (session_id, access_token, refresh_token, expires_at)
-                    VALUES (@sid, @acc, @ref, @exp)
+                    INSERT INTO tokens (session_id, access_token, refresh_token, id_token, expires_at)
+                    VALUES (@sid, @acc, @ref, @idt, @exp)
                     ON CONFLICT(session_id) DO UPDATE SET
                       access_token = excluded.access_token,
                       refresh_token = excluded.refresh_token,
+                      id_token = excluded.id_token,
                       expires_at = excluded.expires_at;
                 """;
             AddParameter(cmd, "@sid", token.SessionId.ToString());
             AddParameter(cmd, "@acc", token.AccessToken);
             AddParameter(cmd, "@ref", token.RefreshToken);
+            AddParameter(cmd, "@idt", token.IdToken);
             AddParameter(cmd, "@exp", token.ExpiresAt.ToString("O")); // ISO 8601
 
             await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);

@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+﻿using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Nerdolando.Bff.Abstractions;
 using Nerdolando.Bff.AspNetCore.Abstractions;
+using Nerdolando.Bff.AspNetCore.AuthenticationEvents;
 using Nerdolando.Bff.AspNetCore.Models;
 using Nerdolando.Bff.AspNetCore.Options;
 using Nerdolando.Bff.AspNetCore.Services;
@@ -46,9 +50,24 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
 
             services.AddHttpContextAccessor();
 
-            //OpenIdConnect post configuration to apply BFF defaults.
-            services.AddSingleton<IPostConfigureOptions<OpenIdConnectOptions>, BffOpenIdConnectPostConfigureOptions>();
+            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<ILogoutService, LogoutService>();
+            services.AddScoped<IUserInfoService, UserInfoService>();
 
+            services.AddTransient<OAuthEventsProxy>();
+            services.AddTransient<OpenIdConnectEventsProxy>();
+
+            services.AddSingleton<IAuthenticationEventsRegistry, AuthenticationEventsRegistry>();
+            
+            services.TryAdd(ServiceDescriptor.Transient(typeof(IAuthenticationEventsProvider<>),
+                typeof(AuthenticationEventsProvider<>)));
+            
+            services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(IPostConfigureOptions<>), 
+                typeof(BffPostConfigureOptions<>)));
+
+            services.AddSingleton<IAuthOptionsConfigureHandler<OAuthOptions>, OAuthFamilyConfigureHandler>();
+            services.AddSingleton<IAuthOptionsConfigureHandler<OpenIdConnectOptions>, OidcFamilyConfigureHandler>();
+            services.AddSingleton<IConfigureHandlerProvider, ConfigureHandlerProvider>();
             return builder;
         }
     }
