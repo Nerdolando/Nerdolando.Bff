@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
-using Nerdolando.Bff.Abstractions;
+using Nerdolando.Bff.Common;
 using Nerdolando.Bff.Components.Abstractions;
 using Nerdolando.Bff.Components.Models;
 using System.Net.Http.Json;

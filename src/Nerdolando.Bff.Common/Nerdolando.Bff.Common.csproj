@@ -2,16 +2,8 @@
   <PropertyGroup>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Description>Abstractions for Nerdolando.Bff package - only for backend development (not Blazor WASM)</Description>
+    <Description>Common stuff for ALL Nerdolando.Bff projects - backend and Blazor Wasm</Description>
     <PackageProjectUrl>https://github.com/Nerdolando/Nerdolando.Bff</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Nerdolando/Nerdolando.Bff</RepositoryUrl>
   </PropertyGroup>
-
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Nerdolando.Bff.Common\Nerdolando.Bff.Common.csproj" />
-  </ItemGroup>
 </Project>

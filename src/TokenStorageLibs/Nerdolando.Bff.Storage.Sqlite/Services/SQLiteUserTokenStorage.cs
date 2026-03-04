@@ -1,4 +1,4 @@
-﻿using Nerdolando.Bff.Abstractions;
+﻿using Nerdolando.Bff.Common;
 using Nerdolando.Bff.Storage.Sqlite.Extensions;
 using System.Data;
 using System.Data.Common;

@@ -74,6 +74,6 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
             }).RequireAuthorization();
 
             return group;
-        }        
+        }
     }
 }

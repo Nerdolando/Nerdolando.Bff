@@ -1,4 +1,4 @@
-﻿namespace Nerdolando.Bff.Abstractions
+﻿namespace Nerdolando.Bff.Common
 {
     /// <summary>
     /// Dto representing a user token. This model is stored in the token storage.

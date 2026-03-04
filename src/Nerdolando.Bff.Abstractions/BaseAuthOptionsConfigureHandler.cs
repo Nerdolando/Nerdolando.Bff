@@ -16,7 +16,7 @@ namespace Nerdolando.Bff.Abstractions
     /// <typeparam name="TOptions">The type of authentication scheme options to configure. Must inherit from AuthenticationSchemeOptions.</typeparam>
     /// <param name="_eventsRegistry">The registry used to manage and register authentication events for the associated authentication scheme.</param>
     public abstract class BaseAuthOptionsConfigureHandler<TOptions>(IAuthenticationEventsRegistry _eventsRegistry) : IAuthOptionsConfigureHandler<TOptions>
-        where TOptions: AuthenticationSchemeOptions
+        where TOptions : AuthenticationSchemeOptions
     {
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Nerdolando.Bff.Abstractions
         /// <param name="schemeName">The name of the authentication scheme for which the BFF events are being registered. Cannot be null or
         /// whitespace.</param>
         protected void RegisterBffEvents<TBffEventType, TOriginalEventType>(TOptions options, string schemeName)
-            where TOriginalEventType: RemoteAuthenticationEvents, new()
+            where TOriginalEventType : RemoteAuthenticationEvents, new()
         {
             ArgumentNullException.ThrowIfNullOrWhiteSpace(schemeName);
 

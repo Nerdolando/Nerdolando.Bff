@@ -1,4 +1,4 @@
-﻿using Nerdolando.Bff.Abstractions;
+﻿using Nerdolando.Bff.Common;
 
 namespace Nerdolando.Bff.AspNetCore.Abstractions
 {

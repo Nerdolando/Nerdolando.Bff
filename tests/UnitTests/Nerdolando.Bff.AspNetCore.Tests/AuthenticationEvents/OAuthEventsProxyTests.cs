@@ -3,14 +3,11 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using Nerdolando.Bff.Abstractions;
 using Nerdolando.Bff.AspNetCore.AuthenticationEvents;
+using Nerdolando.Bff.Common;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Nerdolando.Bff.AspNetCore.Tests.AuthenticationEvents
 {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
 using Nerdolando.Bff.Abstractions;
+using Nerdolando.Bff.Common;
 
 namespace Nerdolando.Bff.AspNetCore.AuthenticationEvents
 {
@@ -26,7 +27,7 @@ namespace Nerdolando.Bff.AspNetCore.AuthenticationEvents
         public override Task RedirectToIdentityProviderForSignOut(RedirectContext context)
         {
             return GetInner(context).RedirectToIdentityProviderForSignOut(context);
-        }   
+        }
 
         public override Task AuthorizationCodeReceived(AuthorizationCodeReceivedContext context)
         {

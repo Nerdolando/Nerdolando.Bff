@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Nerdolando.Bff.Abstractions;
 using Nerdolando.Bff.AspNetCore.AuthenticationEvents;
+using Nerdolando.Bff.Common;
 using NSubstitute;
 using System.Collections.Specialized;
 using System.Security.Claims;
@@ -139,10 +140,10 @@ namespace Nerdolando.Bff.AspNetCore.Tests.AuthenticationEvents
         private OpenIdConnectMessage CreateOidcMessage(string? accessToken, string? idToken = null)
         {
             var data = new NameValueCollection();
-            if(accessToken != null)
+            if (accessToken != null)
                 data["access_token"] = accessToken;
 
-            if(idToken != null)
+            if (idToken != null)
                 data["id_token"] = idToken;
 
             data["token_type"] = "bearer";

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.DependencyInjection;
 using Nerdolando.Bff.Abstractions;
+using Nerdolando.Bff.Common;
 
 namespace Nerdolando.Bff.AspNetCore.AuthenticationEvents
 {
@@ -9,7 +10,7 @@ namespace Nerdolando.Bff.AspNetCore.AuthenticationEvents
     /// Decorator that wraps the original user-supplied OAuth (via EventsType)
     /// while injecting BFF logic into TokenValidated.
     /// </summary>
-    internal sealed class OAuthEventsProxy(IAuthenticationEventsProvider<OAuthEvents> _originalEventsProvider): OAuthEvents
+    internal sealed class OAuthEventsProxy(IAuthenticationEventsProvider<OAuthEvents> _originalEventsProvider) : OAuthEvents
     {
         private OAuthEvents GetInner<T>(BaseContext<T> context)
             where T : RemoteAuthenticationOptions

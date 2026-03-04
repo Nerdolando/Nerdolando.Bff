@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 
 namespace Nerdolando.Bff.Abstractions
 {
@@ -17,7 +16,7 @@ namespace Nerdolando.Bff.Abstractions
         /// <returns></returns>
         bool CanHandle(Type optionsType);
 
-        
+
         /// <summary>
         /// Handles the specified options and scheme name to perform the necessary operations.
         /// </summary>

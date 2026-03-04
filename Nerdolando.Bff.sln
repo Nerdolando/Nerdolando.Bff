@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerdolando.Bff.TestingUtils", "tests\UnitTests\Nerdolando.Bff.TestingUtils\Nerdolando.Bff.TestingUtils.csproj", "{2E0F5B1E-9254-4752-B939-8B72F5EB60D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerdolando.Bff.Common", "src\Nerdolando.Bff.Common\Nerdolando.Bff.Common.csproj", "{9FF6AC45-983E-4E47-9588-30346BEAC624}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +91,10 @@ Global
 		{2E0F5B1E-9254-4752-B939-8B72F5EB60D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E0F5B1E-9254-4752-B939-8B72F5EB60D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E0F5B1E-9254-4752-B939-8B72F5EB60D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FF6AC45-983E-4E47-9588-30346BEAC624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FF6AC45-983E-4E47-9588-30346BEAC624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FF6AC45-983E-4E47-9588-30346BEAC624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FF6AC45-983E-4E47-9588-30346BEAC624}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

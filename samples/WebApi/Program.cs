@@ -21,7 +21,7 @@ namespace WebApi
                 o.Audience = builder.Configuration["Authentication:Audience"];
                 o.Authority = builder.Configuration["Authentication:Authority"];
             });
-            
+
 
             var app = builder.Build();
 

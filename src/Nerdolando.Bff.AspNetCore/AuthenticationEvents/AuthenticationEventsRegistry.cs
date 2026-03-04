@@ -3,11 +3,11 @@ using System.Collections.Concurrent;
 
 namespace Nerdolando.Bff.AspNetCore.AuthenticationEvents
 {
-    internal sealed class AuthenticationEventsRegistry: IAuthenticationEventsRegistry
+    internal sealed class AuthenticationEventsRegistry : IAuthenticationEventsRegistry
     {
         internal readonly record struct AuthenticationSchemeInfo(string OptionsTypeName, string SchemeName);
         private readonly ConcurrentDictionary<AuthenticationSchemeInfo, object> _originalEventTypesDict;
-        
+
 
         public AuthenticationEventsRegistry()
         {

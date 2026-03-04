@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Nerdolando.Bff.Abstractions;
 using Nerdolando.Bff.AspNetCore.Models;
 using Nerdolando.Bff.AspNetCore.Services;
+using Nerdolando.Bff.Common;
 using Nerdolando.Bff.TestingUtils;
 using NSubstitute;
 using System.Net;

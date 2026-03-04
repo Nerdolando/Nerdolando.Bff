@@ -21,7 +21,7 @@
         /// <param name="originalEvents">An object representing the original event handlers or callbacks associated with the authentication process.
         /// May be null if no events are specified.</param>
         void Set(Type originalOptionsType, string authScheme, object originalEvents);
-        
+
         /// <summary>
         /// Attempts to retrieve original authentication events based on the specified authentication scheme.
         /// </summary>

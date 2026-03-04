@@ -6,7 +6,7 @@ using Nerdolando.Bff.AspNetCore.Models;
 
 namespace Nerdolando.Bff.AspNetCore.Services
 {
-    internal sealed class LoginService(IOptionsMonitor<BffConfig> _bffConfigMonitor): ILoginService
+    internal sealed class LoginService(IOptionsMonitor<BffConfig> _bffConfigMonitor) : ILoginService
     {
         public IResult Login(string front, string? returnUrl)
         {

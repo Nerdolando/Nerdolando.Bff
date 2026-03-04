@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Nerdolando.Bff.Abstractions;
 using Nerdolando.Bff.AspNetCore.Models;
+using Nerdolando.Bff.Common;
 using System.Net.Http.Headers;
 
 namespace Nerdolando.Bff.AspNetCore.Services
@@ -14,7 +14,7 @@ namespace Nerdolando.Bff.AspNetCore.Services
         {
             if (string.IsNullOrWhiteSpace(userToken.RefreshToken))
                 return null;
-            
+
             var oidcOptions = GetOIDCOptions();
             EnsureValidOptions(oidcOptions);
 

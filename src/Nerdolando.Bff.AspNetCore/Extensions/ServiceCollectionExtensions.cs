@@ -9,6 +9,7 @@ using Nerdolando.Bff.AspNetCore.AuthenticationEvents;
 using Nerdolando.Bff.AspNetCore.Models;
 using Nerdolando.Bff.AspNetCore.Options;
 using Nerdolando.Bff.AspNetCore.Services;
+using Nerdolando.Bff.Common;
 
 namespace Nerdolando.Bff.AspNetCore.Extensions
 {
@@ -57,11 +58,11 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
             services.AddTransient<OpenIdConnectEventsProxy>();
 
             services.AddSingleton<IAuthenticationEventsRegistry, AuthenticationEventsRegistry>();
-            
+
             services.TryAdd(ServiceDescriptor.Transient(typeof(IAuthenticationEventsProvider<>),
                 typeof(AuthenticationEventsProvider<>)));
-            
-            services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(IPostConfigureOptions<>), 
+
+            services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(IPostConfigureOptions<>),
                 typeof(BffPostConfigureOptions<>)));
 
             services.AddSingleton<IAuthOptionsConfigureHandler<OAuthOptions>, OAuthFamilyConfigureHandler>();
