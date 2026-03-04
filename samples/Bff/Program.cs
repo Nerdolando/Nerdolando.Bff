@@ -75,8 +75,8 @@ namespace Bff
                 {
                     { "local", new Uri("https://localhost:7230") }
                 };
-                options.UseIdTokenAsAccessToken = false;
-                options.Endpoints.ChallengeAuthenticationScheme = GoogleDefaults.AuthenticationScheme;
+                //options.UseIdTokenAsAccessToken = false;
+                options.Endpoints.ChallengeAuthenticationScheme = Auth0Constants.AuthenticationScheme;
                 options.Endpoints.TargetApiBaseUrl = new Uri("https://localhost:7136");
                 options.Endpoints.TargetApiPath = "/api";
             }).UseSqliteTokenStorage();

@@ -19,7 +19,7 @@ namespace WebApi
             }).AddJwtBearer(o =>
             {
                 o.Audience = builder.Configuration["Authentication:Audience"];
-                o.TokenValidationParameters.ValidIssuer = "https://accounts.google.com";
+                o.Authority = builder.Configuration["Authentication:Authority"];
             });
             
 
