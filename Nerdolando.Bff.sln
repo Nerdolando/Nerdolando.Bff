@@ -26,6 +26,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6B394956-594F-4546-AE66-929959774EFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{53BF028B-6C78-4E4C-A4E7-B8B39EE75558}"
+	ProjectSection(SolutionItems) = preProject
+		tests\UnitTests\Directory.Build.props = tests\UnitTests\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nerdolando.Bff.AspNetCore.Tests", "tests\UnitTests\Nerdolando.Bff.AspNetCore.Tests\Nerdolando.Bff.AspNetCore.Tests.csproj", "{073C221C-67E9-44FF-AA12-28C70F2D0182}"
 EndProject
