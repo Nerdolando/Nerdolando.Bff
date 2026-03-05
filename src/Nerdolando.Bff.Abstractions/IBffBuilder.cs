@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Nerdolando.Bff.Common;
 
 namespace Nerdolando.Bff.Abstractions
 {

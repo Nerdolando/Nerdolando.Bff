@@ -1,4 +1,4 @@
-﻿namespace Nerdolando.Bff.Abstractions
+﻿namespace Nerdolando.Bff.Common
 {
     /// <summary>
     /// Identity claim DTO

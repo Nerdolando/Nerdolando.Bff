@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nerdolando.Bff.Abstractions;
+using Nerdolando.Bff.Common;
 
 namespace Nerdolando.Bff.AspNetCore.Services
 {

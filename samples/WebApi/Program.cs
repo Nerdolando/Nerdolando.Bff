@@ -18,9 +18,10 @@ namespace WebApi
                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-                o.Authority = builder.Configuration["Authentication:Authority"];
                 o.Audience = builder.Configuration["Authentication:Audience"];
+                o.Authority = builder.Configuration["Authentication:Authority"];
             });
+
 
             var app = builder.Build();
 

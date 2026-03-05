@@ -1,4 +1,4 @@
-﻿namespace Nerdolando.Bff.Abstractions
+﻿namespace Nerdolando.Bff.Common
 {
     /// <summary>
     /// Dto representing a user token. This model is stored in the token storage.
@@ -16,7 +16,12 @@
         /// <summary>
         /// Refesh token.
         /// </summary>
-        public string RefreshToken { get; set; } = string.Empty;
+        public string? RefreshToken { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Id token if any
+        /// </summary>
+        public string? IdToken { get; set; } = null;
         /// <summary>
         /// When the access token expires.
         /// </summary>

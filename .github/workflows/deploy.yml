@@ -10,7 +10,7 @@ on:
     types: [created]
 env:
   NUGET_DIR: ./packages
-  TEST_SOLUTION: Nerdolando.Bff-Testing.sln
+  TEST_SOLUTION: Nerdolando.Bff.sln
 
 jobs:
   generating-version:
@@ -55,16 +55,14 @@ jobs:
       FILE_VERSION: ${{ needs.generating-version.outputs.fileVersion }}
       FULL_VERSION: ${{ needs.generating-version.outputs.fullVersion }}
       VERSION_SUFFIX: ${{ needs.generating-version.outputs.versionSuffix }}
-    strategy:
-      matrix:
-        dotnet-version: [ '8.0.x', '9.0.x', '10.0.x' ]
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: '10.0.x'
         
       - name: Build projects
         run: dotnet build "./${{ env.TEST_SOLUTION }}" -c "Release" /p:AssemblyVersion=${{ env.FILE_VERSION }} /p:InformationalVersion=${{ env.FULL_VERSION }}

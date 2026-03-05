@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Nerdolando.Bff.Abstractions;
+using Nerdolando.Bff.AspNetCore.Abstractions;
 using Nerdolando.Bff.AspNetCore.Models;
 using Nerdolando.Bff.AspNetCore.Services;
 using System.Net.Http.Headers;
@@ -41,7 +39,9 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
                         return;
                     }
 
-                    transformContext.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userToken.AccessToken);
+                    var requiredAccessToken = bffConfig.UseIdTokenAsAccessToken && !string.IsNullOrWhiteSpace(userToken.IdToken) ? userToken.IdToken : userToken.AccessToken;
+
+                    transformContext.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", requiredAccessToken);
                 });
             }).RequireAuthorization();
 
@@ -51,83 +51,29 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
         {
             var group = endpoints.MapGroup("/auth");
 
-            group.MapGet(config.BffLoginPath, (string front, string? returnUtl, HttpContext httpContext) => Login(front, returnUtl, httpContext, config))
-                .AllowAnonymous();
-
-            group.MapPost(config.BffLogoutPath, (string front, string? returnUrl, HttpContext httpContext) => Logout(front, returnUrl, httpContext, config));
-
-            group.MapGet(config.BffUserInfoPath, async (HttpContext httpContext) =>
+            group.MapGet(config.BffLoginPath, (string front, string? returnUtl, ILoginService loginService) =>
             {
-                var refresher = httpContext.RequestServices.GetRequiredService<AuthRefresher>();
-                var userToken = await refresher.GetOrRefreshAuthAsync().ConfigureAwait(false);
+                return loginService.Login(front, returnUtl);
+            })
+            .AllowAnonymous();
 
-                if (userToken == null)
-                {
+            group.MapPost(config.BffLogoutPath, async (string front, string? returnUrl, ILogoutService logoutService) =>
+            {
+                return await logoutService.LogoutAsync(front, returnUrl).ConfigureAwait(false);
+            });
+
+            group.MapGet(config.BffUserInfoPath, async (IUserInfoService userInfoService) =>
+            {
+                var userInfo = await userInfoService.GetCurrentUserIdentityAsync().ConfigureAwait(false);
+
+                if (userInfo == null)
                     return Results.Unauthorized();
-                }
 
-                var identityDto = new IdentityDto
-                {
-                    AuthenticationType = httpContext.User.Identity?.AuthenticationType ?? string.Empty,
-                    Claims = httpContext.User.Claims.Select(c => new IdentityClaim { Type = c.Type, Value = c.Value })
-                };
-
-                return Results.Ok(identityDto);
+                return Results.Ok(userInfo);
 
             }).RequireAuthorization();
 
             return group;
-        }
-
-        internal static IResult Login(string front,
-            string? returnUrl,
-            HttpContext httpContext,
-            BffEndpointConfig config)
-        {
-            var redirectUri = BuildRedirectUri(front, returnUrl ?? "/", httpContext);
-            if (redirectUri == null)
-                return Results.BadRequest("Invalid returnUrl");
-
-            var authenticationProperties = new AuthenticationProperties();
-            authenticationProperties.RedirectUri = redirectUri.ToString();
-            authenticationProperties.IsPersistent = true;
-
-            return TypedResults.Challenge(authenticationProperties, [config.ChallengeAuthenticationScheme]);
-        }
-
-        internal static IResult Logout(string front,
-            string? returnUrl,
-            HttpContext httpContext,
-            BffEndpointConfig config)
-        {
-            var redirectUri = BuildRedirectUri(front, returnUrl ?? "/", httpContext);
-            if (redirectUri == null)
-                return Results.Problem("Invalid returnUrl");
-
-            var authenticationProperties = new AuthenticationProperties();
-            authenticationProperties.RedirectUri = redirectUri.ToString();
-            authenticationProperties.IsPersistent = true;
-
-            return TypedResults.SignOut(authenticationProperties, [CookieAuthenticationDefaults.AuthenticationScheme, config.ChallengeAuthenticationScheme]);
-        }
-
-        internal static Uri? BuildRedirectUri(string frontType, string? returnUrl, HttpContext httpContext)
-        {
-            var bffOptionsMonitor = httpContext.RequestServices.GetRequiredService<IOptionsMonitor<BffConfig>>();
-            var bffOptions = bffOptionsMonitor.CurrentValue;
-
-            if (!bffOptions.FrontUrls.TryGetValue(frontType, out Uri? value))
-                return null;
-
-            if (string.IsNullOrWhiteSpace(returnUrl))
-                returnUrl = "/";
-
-            if (returnUrl.IndexOfAny(['\\', '\r', '\n']) >= 0)
-                return null;
-
-            var ub = new UriBuilder(value!);
-            ub.Path = returnUrl;
-            return ub.Uri;
         }
     }
 }
