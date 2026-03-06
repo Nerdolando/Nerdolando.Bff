@@ -35,5 +35,20 @@ namespace Nerdolando.Bff.Components.Models
         /// </summary>
         [Required]
         public string BffUserInfoPath { get; set; } = "/me";
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the user should be logged out using a backchannel request to the
+        /// authentication server.
+        /// </summary>
+        /// <remarks>When set to <see langword="true"/>, the logout process uses a backchannel
+        /// communication with the authentication server, which may provide a more seamless user experience. Ensure that
+        /// the application and authentication server are configured to support backchannel logout before enabling this
+        /// option.
+        /// 
+        /// Normally logout should be executed by frontchannel, that is simple redirect from browser. However, in some cases, 
+        /// such as when the authentication server does not support frontchannel logout, 
+        /// backchannel logout can be used. With backchannel logout, the client application sends a request to Bff using AJAX request. 
+        /// </remarks>
+        public bool LogoutWithBackchannel { get; set; } = false;
     }
 }

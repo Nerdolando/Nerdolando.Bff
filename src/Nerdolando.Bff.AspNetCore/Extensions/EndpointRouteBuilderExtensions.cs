@@ -62,6 +62,11 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
                 return await logoutService.LogoutAsync(front, returnUrl).ConfigureAwait(false);
             });
 
+            group.MapGet(config.BffLogoutPath, async (string front, string? returnUrl, ILogoutService logoutService) =>
+            {
+                return await logoutService.LogoutAsync(front, returnUrl).ConfigureAwait(false);
+            });
+
             group.MapGet(config.BffUserInfoPath, async (IUserInfoService userInfoService) =>
             {
                 var userInfo = await userInfoService.GetCurrentUserIdentityAsync().ConfigureAwait(false);
