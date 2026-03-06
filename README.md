@@ -125,7 +125,7 @@ If you are not aware of CORS, you can read more about it here: https://developer
 ### 1. Configure authentication
 You must configure remote authentication (e.g. OpenID Connect) in your ASP.NET Core BFF host. You do this as you normally would in any other webapp with OIDC/OAuth
 
-`Nerdolando.Bff` does not enforce a specific IdP. You can use any provider compatible with OpenID Connect (Google, Auth0, Microsoft Entra ID, etc.) as long as you configure it via standard ASP.NET Core authentication:
+`Nerdolando.Bff` does not enforce a specific IdP. You can use any provider compatible with OpenID Connect or OAuth (Google, Auth0, Microsoft Entra ID, etc.) as long as you configure it via standard ASP.NET Core authentication. If you have specific situation, you can always create extensions.
 
 ```csharp
 builder.Services
@@ -218,6 +218,12 @@ BFF will only send the authentication cookie to URLs that are listed here.
 
 >This is crucial for security: it prevents cookies from being issued/attached to unauthorized front-ends. Use HTTPS in production.
 
+### UseIdTokenAsAccessToken
+Some providers will not issue access token that you could use to protect your OWN APIs. 
+For example Google isses Access Tokens that are to be used ONLY in Google Apis.
+
+In such cases, when you want to protect your own API and you will not get usable access token, set this property to `true`. Then BFF will try to get IdToken as well as AccessToken, but then will use IdToken in `Authorization` header and you Api will get IdToken in JWT standard.
+
 ### Endpoints
 Controls how the BFF talks to the target API and exposes its own endpoints:
 
@@ -302,7 +308,7 @@ BFF forwards it to:
 with the appropriate `Authorization` header.
 
 ## Signing out
-To sign out, send a POST request (including the credential cookie) to:
+To sign out, send a POST (backchannel logout) request (including the credential cookie) or GET (frontchannel logout) to:
 `/auth{BffLogoutPath}?front={frontAlias}&returnUrl={relativeReturnUrl}`
 
 Example with default BffLogoutPath = "/logout":
