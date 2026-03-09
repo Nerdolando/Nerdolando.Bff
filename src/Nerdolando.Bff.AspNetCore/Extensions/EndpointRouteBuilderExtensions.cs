@@ -51,9 +51,9 @@ namespace Nerdolando.Bff.AspNetCore.Extensions
         {
             var group = endpoints.MapGroup("/auth");
 
-            group.MapGet(config.BffLoginPath, (string front, string? returnUtl, ILoginService loginService) =>
+            group.MapGet(config.BffLoginPath, (string front, string? returnUrl, ILoginService loginService) =>
             {
-                return loginService.Login(front, returnUtl);
+                return loginService.Login(front, returnUrl);
             })
             .AllowAnonymous();
 
