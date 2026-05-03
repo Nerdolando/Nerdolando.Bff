@@ -10,7 +10,8 @@ namespace Nerdolando.Bff.AspNetCore.Options
         public void PostConfigure(string? name, TOptions options)
         {
             ArgumentNullException.ThrowIfNull(options);
-            ArgumentNullException.ThrowIfNullOrEmpty(name);
+            if(string.IsNullOrWhiteSpace(name))
+                return;
 
             var handler = _configureHandlerProvider.GetHandlerForOptions<TOptions>();
             if (handler == null)
