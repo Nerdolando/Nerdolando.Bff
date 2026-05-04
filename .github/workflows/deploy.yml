@@ -58,9 +58,9 @@ jobs:
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
         
@@ -79,7 +79,7 @@ jobs:
             --version-suffix "${{ env.VERSION_SUFFIX }}" --no-build --no-restore --include-symbols --include-source
         
       - name: Uploading artifacts
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7
         with:
           name: packages-artifact
           path: ${{ env.NUGET_DIR }}
@@ -92,7 +92,7 @@ jobs:
 
     steps:
     - name: Downloading build artifact
-      uses: actions/download-artifact@v5.0.0
+      uses: actions/download-artifact@v8
       with:
         name: packages-artifact
         merge-multiple: true
@@ -114,7 +114,7 @@ jobs:
     needs: deploy
     steps:
       - name: Delete artifacts
-        uses: GeekyEggo/delete-artifact@v5.1.0
+        uses: GeekyEggo/delete-artifact@v6
         with:
           name: packages-artifact
 
